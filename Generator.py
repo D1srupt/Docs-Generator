@@ -1,0 +1,281 @@
+# Библиотеки
+import os.path
+import tkinter as tk
+from tkinter import ttk
+from tkinter import filedialog
+from docx import Document
+from docx.shared import Pt
+import customtkinter
+from PIL import Image, ImageTk
+import CTkMessagebox
+
+# Загрузка картинок для кнопки
+file_path = os.path.dirname(os.path.realpath((__file__)))
+image_1 = customtkinter.CTkImage(Image.open(file_path + "/dark.png"), size=(35, 35))
+image_2 = customtkinter.CTkImage(Image.open(file_path + "/light.png"), size=(35, 35))
+
+
+def find_replace_in_table(table, find_text, replace_text):
+    for row in table.rows:
+        for cell in row.cells:
+            for paragraph in cell.paragraphs:
+                if find_text in paragraph.text:
+                    paragraph.text = paragraph.text.replace(find_text, replace_text)
+
+
+def on_document_type_select():
+    if type_combobox.get() == "Служебная записка":
+        addr_entry.configure(state="disabled")
+        answer_entry.config(state="disabled")
+        male_radio.config(state="disabled")
+        female_radio.config(state="disabled")
+
+    if type_var.get() == "Приказ":
+        addr_entry.config(state="disabled")
+        answer_entry.config(state="disabled")
+        address_combobox.config(state="disabled")
+        male_radio.configure(state="disabled")
+        female_radio.config(state="disabled")
+        content_entry.config(state="disabled")
+
+    if type_var.get() == "Письмо":
+        addr_entry.config(state="normal")
+        answer_entry.config(state="normal")
+        address_combobox.config(state="normal")
+        male_radio.config(state="normal")
+        female_radio.config(state="normal")
+        content_entry.config(state="normal")
+
+
+def generate_document():
+    address = address_var.get()
+    theme = theme_entry.get()
+    content = content_entry.get("1.0", "end-1c")
+    answer = answer_entry.get()
+    addr = addr_entry.get()
+    save_path = save_path_entry.get()
+
+    if type_var.get() == "Служебная записка":
+        doc = Document("СЗ_шаблон.docx")
+    elif type_var.get() == "Приказ":
+        doc = Document("Приказ_шаблон.docx")
+    elif type_var.get() == "Письмо":
+        doc = Document("Письмо_шаблон.docx")
+
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    if "(Адресат)" in paragraph.text:
+                        if address == "Генеральный директор":
+                            paragraph.text = paragraph.text.replace("(Адресат)", "Генеральный директор")
+                            run = paragraph.runs[0]
+                            run.font.name = "Arial"
+                            run.font.size = Pt(14)
+                        elif address == "Главный инженер":
+                            paragraph.text = paragraph.text.replace("(Адресат)", "Главный инженер")
+                            run = paragraph.runs[0]
+                            run.font.name = "Arial"
+                            run.font.size = Pt(14)
+                        elif address == "Директор по безопасности":
+                            paragraph.text = paragraph.text.replace("(Адресат)", "Директор по безопасности")
+                            run = paragraph.runs[0]
+                            run.font.name = "Arial"
+                            run.font.size = Pt(14)
+
+                    if "(Имя и Отчество)" in paragraph.text:
+                        if address == "Генеральный директор":
+                            paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Павел Гаврилович")
+                            run = paragraph.runs[0]
+                            run.font.name = "Arial"
+                            run.font.size = Pt(14)
+                        elif address == "Главный инженер":
+                            paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Денис Александрович")
+                            run = paragraph.runs[0]
+                            run.font.name = "Arial"
+                            run.font.size = Pt(14)
+                        elif address == "Директор по безопасности":
+                            paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Андрей Владимирович")
+                            run = paragraph.runs[0]
+                            run.font.name = "Arial"
+                            run.font.size = Pt(14)
+
+                    if "(Тема)" in paragraph.text:
+                        paragraph.text = paragraph.text.replace("(Тема)", theme)
+                        run = paragraph.runs[0]
+                        run.font.name = "Arial"
+                        run.font.size = Pt(14)
+
+                    if "(Содержание)" in paragraph.text:
+                        paragraph.text = paragraph.text.replace("(Содержание)", content)
+                        run = paragraph.runs[0]
+                        run.font.name = "Arial"
+                        run.font.size = Pt(14)
+
+                    if "(На какое письмо)" in paragraph.text:
+                        paragraph.text = paragraph.text.replace("(На какое письмо)", answer)
+                        run = paragraph.runs[0]
+                        run.font.name = "Arial"
+                        run.font.size = Pt(14)
+
+                    if "(Адрес)" in paragraph.text:
+                        paragraph.text = paragraph.text.replace("(Адрес)", addr)
+                        run = paragraph.runs[0]
+                        run.font.name = "Arial"
+                        run.font.size = Pt(14)
+
+                    if gender_var.get() == "Мужской":
+                        paragraph.text = paragraph.text.replace("(Пол)", "ый")
+                    elif gender_var.get() == "Женский":
+                        paragraph.text = paragraph.text.replace("(Пол)", "ая")
+
+    # Добавим замену для текста, не находящегося в таблице
+    for paragraph in doc.paragraphs:
+        if "(Имя и Отчество)" in paragraph.text:
+            if address == "Генеральный директор":
+                paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Павел Гаврилович")
+                run = paragraph.runs[0]
+                run.font.name = "Arial"
+                run.font.size = Pt(14)
+            elif address == "Главный инженер":
+                paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Денис Александрович")
+                run = paragraph.runs[0]
+                run.font.name = "Arial"
+                run.font.size = Pt(14)
+            elif address == "Директор по безопасности":
+                paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Андрей Владимирович")
+                run = paragraph.runs[0]
+                run.font.name = "Arial"
+                run.font.size = Pt(14)
+            if "(Тема)" in paragraph.text:
+                paragraph.text = paragraph.text.replace("(Тема)", theme)
+                run = paragraph.runs[0]
+                run.font.name = "Arial"
+                run.font.size = Pt(14)
+
+        if "(Содержание)" in paragraph.text:
+            paragraph.text = paragraph.text.replace("(Содержание)", content)
+            run = paragraph.runs[0]
+            run.font.name = "Arial"
+            run.font.size = Pt(14)
+
+        if gender_var.get() == "Мужской":
+            paragraph.text = paragraph.text.replace("(Пол)", "ый")
+        elif gender_var.get() == "Женский":
+            paragraph.text = paragraph.text.replace("(Пол)", "ая")
+
+        if "(исполнитель)" in paragraph.text:
+            paragraph.text = paragraph.text.replace("(исполнитель)", "Исп. Скоробогатько Е.А. 1280")
+
+    doc.save(save_path)
+    #print("Документ успешно сформирован.")
+    CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Документ успешно сформирован!")
+    address = None
+    theme = None
+    content = None
+    answer = None
+    addr = None
+    save_path = None
+
+
+# Создание графического интерфейса
+customtkinter.set_appearance_mode("Dark")
+customtkinter.set_default_color_theme("blue")
+
+root = customtkinter.CTk()
+root.geometry("400x700")
+root.resizable(width=False, height=False)
+root.title("Генератор документов")
+
+type_label = customtkinter.CTkLabel(root, text="Выберите вид документа:")
+type_label.pack()
+
+type_var = tk.StringVar()
+type_combobox = customtkinter.CTkComboBox(root, width=300, variable=type_var, values=["Служебная записка", "Приказ", "Письмо"])
+type_combobox.pack()
+type_combobox.bind("<<ComboboxSelected>>", on_document_type_select)
+
+address_label = customtkinter.CTkLabel(root, text="Выберите адресата:")
+address_label.pack()
+
+gender_var = tk.StringVar()
+gender_var.set("Мужской")
+male_radio = customtkinter.CTkRadioButton(root, text="Мужской", variable=gender_var, radiobutton_width=15,
+                                          radiobutton_height=15, value="Мужской")
+male_radio.pack()
+female_radio = customtkinter.CTkRadioButton(root, text="Женский", variable=gender_var, radiobutton_width=15,
+                                            radiobutton_height=15, value="Женский")
+female_radio.pack()
+
+address_var = tk.StringVar()
+address_combobox = customtkinter.CTkComboBox(root, width=300, variable=address_var, values=["Генеральный директор", "Главный инженер",
+                                                                      "Директор по безопасности"])
+address_combobox.pack()
+
+theme_label = customtkinter.CTkLabel(root, text="Введите тему:")
+theme_label.pack()
+
+theme_entry = customtkinter.CTkEntry(root, width=300)
+theme_entry.pack()
+
+answer_label = customtkinter.CTkLabel(root, text="Введите номер и дату входящего письма:")
+answer_label.pack()
+
+answer_entry = customtkinter.CTkEntry(root, width=300)
+answer_entry.pack()
+
+addr_label = customtkinter.CTkLabel(root, text="Введите адрес получателя:")
+addr_label.pack()
+
+addr_entry = customtkinter.CTkEntry(root, width=300)
+addr_entry.pack()
+
+content_label = customtkinter.CTkLabel(root, text="Введите содержание:")
+content_label.pack()
+
+content_entry = customtkinter.CTkTextbox(root, height=200, width=300)
+content_entry.pack()
+
+save_path_label = customtkinter.CTkLabel(root, text="Выберите место сохранения:")
+save_path_label.pack()
+
+save_path_entry = customtkinter.CTkEntry(root, width=300)
+save_path_entry.pack()
+
+
+def select_save_path():
+    save_path = customtkinter.filedialog.asksaveasfilename(defaultextension=".docx",
+                                                           filetypes=[("Word files", "*.docx")])
+    save_path_entry.delete(0, "end")
+    save_path_entry.insert(0, save_path)
+
+
+
+select_button = customtkinter.CTkButton(root, text="Выбрать место сохранения", command=select_save_path)
+select_button.pack()
+select_button.place(x=110, y=615)
+
+generate_button = customtkinter.CTkButton(root, text="Сформировать документ", command=generate_document)
+generate_button.pack()
+generate_button.place(x=117, y=650)
+
+
+def set_light_theme():
+    customtkinter.set_appearance_mode("Dark")
+    dark_on = customtkinter.CTkButton(root, width=35, height=35, text="", command=set_dark_theme, image=image_2)
+    dark_on.pack()
+    dark_on.place(x=340, y=650)
+
+
+def set_dark_theme():
+    customtkinter.set_appearance_mode("light")
+    dark_off = customtkinter.CTkButton(root, width=35, height=35, text="", command=set_light_theme, image=image_1)
+    dark_off.pack()
+    dark_off.place(x=340, y=650)
+
+
+dark_on = customtkinter.CTkButton(root, width=35, height=35, text="", command=set_dark_theme, image=image_2)
+dark_on.pack()
+dark_on.place(x=340, y=650)
+
+root.mainloop()

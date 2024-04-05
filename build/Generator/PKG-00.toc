@@ -1,0 +1,67 @@
+('C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+ 'Generator\\build\\Generator\\Generator.pkg',
+ {'BINARY': True,
+  'DATA': True,
+  'EXECUTABLE': True,
+  'EXTENSION': True,
+  'PYMODULE': True,
+  'PYSOURCE': True,
+  'PYZ': False,
+  'SPLASH': True,
+  'SYMLINK': False},
+ [('pyi-contents-directory _internal', '', 'OPTION'),
+  ('PYZ-00.pyz',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\build\\Generator\\PYZ-00.pyz',
+   'PYZ'),
+  ('struct',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\build\\Generator\\localpycs\\struct.pyc',
+   'PYMODULE'),
+  ('pyimod01_archive',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\build\\Generator\\localpycs\\pyimod01_archive.pyc',
+   'PYMODULE'),
+  ('pyimod02_importers',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\build\\Generator\\localpycs\\pyimod02_importers.pyc',
+   'PYMODULE'),
+  ('pyimod03_ctypes',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\build\\Generator\\localpycs\\pyimod03_ctypes.pyc',
+   'PYMODULE'),
+  ('pyimod04_pywin32',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\build\\Generator\\localpycs\\pyimod04_pywin32.pyc',
+   'PYMODULE'),
+  ('pyiboot01_bootstrap',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\.venv\\Lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'PYSOURCE'),
+  ('pyi_rth_inspect',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py',
+   'PYSOURCE'),
+  ('pyi_rth_pkgutil',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgutil.py',
+   'PYSOURCE'),
+  ('pyi_rth_multiprocessing',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
+   'PYSOURCE'),
+  ('pyi_rth__tkinter',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs '
+   'Generator\\.venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth__tkinter.py',
+   'PYSOURCE'),
+  ('Generator',
+   'C:\\Users\\e.skorobogatko\\PycharmProjects\\Docs Generator\\Generator.py',
+   'PYSOURCE')],
+ 'python312.dll',
+ True,
+ False,
+ False,
+ [],
+ None,
+ None,
+ None)
