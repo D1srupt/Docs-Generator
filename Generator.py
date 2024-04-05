@@ -26,9 +26,9 @@ def find_replace_in_table(table, find_text, replace_text):
 def on_document_type_select():
     if type_combobox.get() == "Служебная записка":
         addr_entry.configure(state="disabled")
-        answer_entry.config(state="disabled")
-        male_radio.config(state="disabled")
-        female_radio.config(state="disabled")
+        answer_entry.configure(state="disabled")
+        male_radio.configure(state="disabled")
+        female_radio.configure(state="disabled")
 
     if type_var.get() == "Приказ":
         addr_entry.config(state="disabled")
