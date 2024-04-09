@@ -55,6 +55,8 @@ def generate_document():
     addr = addr_entry.get()
     save_path = save_path_entry.get()
 
+
+
     if type_var.get() == "Служебная записка":
         doc = Document("СЗ_шаблон.docx")
     elif type_var.get() == "Приказ":
@@ -164,8 +166,9 @@ def generate_document():
         elif gender_var.get() == "Женский":
             paragraph.text = paragraph.text.replace("(Пол)", "ая")
 
-        if "(исполнитель)" in paragraph.text:
-            paragraph.text = paragraph.text.replace("(исполнитель)", "Исп. Скоробогатько Е.А. 1280")
+
+
+
 
     doc.save(save_path)
     #print("Документ успешно сформирован.")
@@ -183,7 +186,7 @@ customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
 
 root = customtkinter.CTk()
-root.geometry("400x700")
+root.geometry("400x750")
 root.resizable(width=False, height=False)
 root.title("Генератор документов")
 
@@ -251,6 +254,8 @@ def select_save_path():
 
 
 
+
+
 select_button = customtkinter.CTkButton(root, text="Выбрать место сохранения", command=select_save_path)
 select_button.pack()
 select_button.place(x=110, y=615)
@@ -264,18 +269,61 @@ def set_light_theme():
     customtkinter.set_appearance_mode("Dark")
     dark_on = customtkinter.CTkButton(root, width=35, height=35, text="", command=set_dark_theme, image=image_2)
     dark_on.pack()
-    dark_on.place(x=340, y=650)
+    dark_on.place(x=340, y=700)
 
 
 def set_dark_theme():
     customtkinter.set_appearance_mode("light")
     dark_off = customtkinter.CTkButton(root, width=35, height=35, text="", command=set_light_theme, image=image_1)
     dark_off.pack()
-    dark_off.place(x=340, y=650)
+    dark_off.place(x=340, y=700)
 
 
 dark_on = customtkinter.CTkButton(root, width=35, height=35, text="", command=set_dark_theme, image=image_2)
 dark_on.pack()
-dark_on.place(x=340, y=650)
+dark_on.place(x=340, y=700)
+
+#Второе диалоговое окно
+def change():
+    if type_var.get() == "Служебная записка":
+        doc = Document("СЗ_шаблон.docx")
+    elif type_var.get() == "Приказ":
+        doc = Document("Приказ_шаблон.docx")
+    elif type_var.get() == "Письмо":
+        doc = Document("Письмо_шаблон.docx")
+
+    def change_isp():
+      for section in doc.sections:
+            footer = section.footer
+            for paragraph in footer.paragraphs:
+                paragraph.text = paragraph.text.replace("(ФИО исполнителя)", change_fio_entry.get())
+
+
+    change_main = customtkinter.CTkToplevel()
+    change_main.geometry("300x170+{}+{}".format(int(change_main.winfo_screenwidth() / 2 - 150),
+                                                int(change_main.winfo_screenheight() / 2 - 100)))
+    change_main.resizable(width=False, height=False)
+    change_main.title("Сменить исполнителя")
+
+    change_fio = customtkinter.CTkLabel(change_main, width=100, height=30, text="ФИО исполнителя")
+    change_fio.pack()
+
+    change_fio_entry = customtkinter.CTkEntry(change_main, width=250, height=30)
+    change_fio_entry.pack()
+
+    phone = customtkinter.CTkLabel(change_main, width=100, height=30, text="Номер раб. телефона")
+    phone.pack()
+
+    phone_entry = customtkinter.CTkEntry(change_main, width=250, height=30)
+    phone_entry.pack()
+
+    change_button = customtkinter.CTkButton(change_main, height=30, text="Сменить", command=change_isp)
+    change_button.pack()
+    change_button.place(x=85, y=130)
+
+
+change = customtkinter.CTkButton(root, width=40, height=35, text="Сменить исполнителя", command=change)
+change.pack()
+change.place(x=15, y=700)
 
 root.mainloop()
