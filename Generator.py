@@ -3,6 +3,8 @@ import os.path
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
+
+import docx
 from docx import Document
 from docx.shared import Pt
 import customtkinter
@@ -55,14 +57,8 @@ def generate_document():
     addr = addr_entry.get()
     save_path = save_path_entry.get()
 
+    doc = Document("Temp.docx")
 
-
-    if type_var.get() == "Служебная записка":
-        doc = Document("СЗ_шаблон.docx")
-    elif type_var.get() == "Приказ":
-        doc = Document("Приказ_шаблон.docx")
-    elif type_var.get() == "Письмо":
-        doc = Document("Письмо_шаблон.docx")
 
     for table in doc.tables:
         for row in table.rows:
@@ -166,12 +162,8 @@ def generate_document():
         elif gender_var.get() == "Женский":
             paragraph.text = paragraph.text.replace("(Пол)", "ая")
 
-
-
-
-
     doc.save(save_path)
-    #print("Документ успешно сформирован.")
+    os.remove("Temp.docx")
     CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Документ успешно сформирован!")
     address = None
     theme = None
@@ -260,6 +252,7 @@ select_button = customtkinter.CTkButton(root, text="Выбрать место с
 select_button.pack()
 select_button.place(x=110, y=615)
 
+
 generate_button = customtkinter.CTkButton(root, text="Сформировать документ", command=generate_document)
 generate_button.pack()
 generate_button.place(x=117, y=650)
@@ -293,23 +286,27 @@ def change():
         doc = Document("Письмо_шаблон.docx")
 
     def change_isp():
-      for section in doc.sections:
-            footer = section.footer
-            for paragraph in footer.paragraphs:
-                paragraph.text = paragraph.text.replace("(ФИО исполнителя)", change_fio_entry.get())
+        section = doc.sections[-1]
+        footer = section.footer
+        footer_para = footer.paragraphs[-1]
+        footer_para.text = "Исп. " + change_fio_entry.get() + ' ' + 'тел. ' + phone_entry.get()
+        doc.save('Temp.docx')
+        change_main.destroy()
+        CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Исполнитель успешно задан!")
 
 
     change_main = customtkinter.CTkToplevel()
     change_main.geometry("300x170+{}+{}".format(int(change_main.winfo_screenwidth() / 2 - 150),
                                                 int(change_main.winfo_screenheight() / 2 - 100)))
     change_main.resizable(width=False, height=False)
-    change_main.title("Сменить исполнителя")
+    change_main.title("Указать исполнителя")
 
     change_fio = customtkinter.CTkLabel(change_main, width=100, height=30, text="ФИО исполнителя")
     change_fio.pack()
 
     change_fio_entry = customtkinter.CTkEntry(change_main, width=250, height=30)
     change_fio_entry.pack()
+
 
     phone = customtkinter.CTkLabel(change_main, width=100, height=30, text="Номер раб. телефона")
     phone.pack()
@@ -322,7 +319,7 @@ def change():
     change_button.place(x=85, y=130)
 
 
-change = customtkinter.CTkButton(root, width=40, height=35, text="Сменить исполнителя", command=change)
+change = customtkinter.CTkButton(root, width=40, height=35, text="Указать исполнителя", command=change)
 change.pack()
 change.place(x=15, y=700)
 
