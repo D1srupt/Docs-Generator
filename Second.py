@@ -14,4 +14,17 @@ def second_tile(root):
     typedoc = CTk.CTkLabel(second, text='Выберите тип документа')
     typedoc.pack()
 
+    sz = CTk.CTkButton(second, text='Служебная записка')
+    # sz.configure(command=lambda: on_document_sz_select(second))
+    sz.pack()
+    sz.place(x=55, y=40)
+
+    prikaz = CTk.CTkButton(second, text='Приказ')
+    prikaz.pack()
+    prikaz.place(x=55, y=110)
+
+    pismo = CTk.CTkButton(second, text='Письмо')
+    pismo.pack()
+    pismo.place(x=55, y=180)
+
     second.mainloop()

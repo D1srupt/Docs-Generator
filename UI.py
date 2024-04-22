@@ -33,7 +33,7 @@ ph.pack()
 phn = CTk.CTkEntry(root, width=220)
 phn.pack()
 
-ok_but = CTk.CTkButton(root, text='ОК')
+ok_but = CTk.CTkButton(root, text='Далее')
 ok_but.configure(state='disabled')
 ok_but.pack()
 ok_but.place(x=60, y=180)
