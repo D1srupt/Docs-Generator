@@ -27,26 +27,28 @@ def find_replace_in_table(table, find_text, replace_text):
 
 def on_document_type_select():
     if type_combobox.get() == "Служебная записка":
+        print("Выбрана служебка")
         addr_entry.configure(state="disabled")
         answer_entry.configure(state="disabled")
         male_radio.configure(state="disabled")
         female_radio.configure(state="disabled")
 
-    if type_var.get() == "Приказ":
-        addr_entry.config(state="disabled")
-        answer_entry.config(state="disabled")
-        address_combobox.config(state="disabled")
+    if type_combobox.get() == "Приказ":
+        print("Выбрана служебка")
+        addr_entry.configure(state="disabled")
+        answer_entry.configure(state="disabled")
+        address_combobox.configure(state="disabled")
         male_radio.configure(state="disabled")
-        female_radio.config(state="disabled")
-        content_entry.config(state="disabled")
+        female_radio.configure(state="disabled")
+        content_entry.configure(state="disabled")
 
-    if type_var.get() == "Письмо":
-        addr_entry.config(state="normal")
-        answer_entry.config(state="normal")
-        address_combobox.config(state="normal")
-        male_radio.config(state="normal")
-        female_radio.config(state="normal")
-        content_entry.config(state="normal")
+    if type_combobox.get() == "Письмо":
+        addr_entry.configure(state="normal")
+        answer_entry.configure(state="normal")
+        address_combobox.configure(state="normal")
+        male_radio.configure(state="normal")
+        female_radio.configure(state="normal")
+        content_entry.configure(state="normal")
 
 
 def generate_document():
@@ -58,7 +60,6 @@ def generate_document():
     save_path = save_path_entry.get()
 
     doc = Document("Temp.docx")
-
 
     for table in doc.tables:
         for row in table.rows:
@@ -159,8 +160,14 @@ def generate_document():
 
         if gender_var.get() == "Мужской":
             paragraph.text = paragraph.text.replace("(Пол)", "ый")
+            run = paragraph.runs[0]
+            run.font.name = "Arial"
+            run.font.size = Pt(14)
         elif gender_var.get() == "Женский":
             paragraph.text = paragraph.text.replace("(Пол)", "ая")
+            run = paragraph.runs[0]
+            run.font.name = "Arial"
+            run.font.size = Pt(14)
 
     doc.save(save_path)
     os.remove("Temp.docx")
@@ -185,10 +192,10 @@ root.title("Генератор документов")
 type_label = customtkinter.CTkLabel(root, text="Выберите вид документа:")
 type_label.pack()
 
-type_var = tk.StringVar()
+type_var = customtkinter.StringVar()
 type_combobox = customtkinter.CTkComboBox(root, width=300, variable=type_var, values=["Служебная записка", "Приказ", "Письмо"])
 type_combobox.pack()
-type_combobox.bind("<<ComboboxSelected>>", on_document_type_select)
+type_combobox.bind("<<ComboboxSelected>>", lambda event: on_document_type_select())
 
 address_label = customtkinter.CTkLabel(root, text="Выберите адресата:")
 address_label.pack()
@@ -203,8 +210,9 @@ female_radio = customtkinter.CTkRadioButton(root, text="Женский", variabl
 female_radio.pack()
 
 address_var = tk.StringVar()
-address_combobox = customtkinter.CTkComboBox(root, width=300, variable=address_var, values=["Генеральный директор", "Главный инженер",
-                                                                      "Директор по безопасности"])
+address_combobox = customtkinter.CTkComboBox(root, width=300, variable=address_var,
+                                             values=["Генеральный директор", "Главный инженер",
+                                                     "Директор по безопасности"])
 address_combobox.pack()
 
 theme_label = customtkinter.CTkLabel(root, text="Введите тему:")
@@ -228,7 +236,13 @@ addr_entry.pack()
 content_label = customtkinter.CTkLabel(root, text="Введите содержание:")
 content_label.pack()
 
+
+def on_paste():
+    content_entry.paste()
+
+
 content_entry = customtkinter.CTkTextbox(root, height=200, width=300)
+content_entry.bind('<Control-v>', on_paste)
 content_entry.pack()
 
 save_path_label = customtkinter.CTkLabel(root, text="Выберите место сохранения:")
@@ -245,13 +259,9 @@ def select_save_path():
     save_path_entry.insert(0, save_path)
 
 
-
-
-
 select_button = customtkinter.CTkButton(root, text="Выбрать место сохранения", command=select_save_path)
 select_button.pack()
 select_button.place(x=110, y=615)
-
 
 generate_button = customtkinter.CTkButton(root, text="Сформировать документ", command=generate_document)
 generate_button.pack()
@@ -276,7 +286,8 @@ dark_on = customtkinter.CTkButton(root, width=35, height=35, text="", command=se
 dark_on.pack()
 dark_on.place(x=340, y=700)
 
-#Второе диалоговое окно
+
+# Второе диалоговое окно
 def change():
     if type_var.get() == "Служебная записка":
         doc = Document("СЗ_шаблон.docx")
@@ -290,10 +301,12 @@ def change():
         footer = section.footer
         footer_para = footer.paragraphs[-1]
         footer_para.text = "Исп. " + change_fio_entry.get() + ' ' + 'тел. ' + phone_entry.get()
+        run = footer_para.runs[0]
+        run.font.name = "Arial"
+        run.font.size = Pt(10)
         doc.save('Temp.docx')
         change_main.destroy()
         CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Исполнитель успешно задан!")
-
 
     change_main = customtkinter.CTkToplevel()
     change_main.geometry("300x170+{}+{}".format(int(change_main.winfo_screenwidth() / 2 - 150),
@@ -306,7 +319,6 @@ def change():
 
     change_fio_entry = customtkinter.CTkEntry(change_main, width=250, height=30)
     change_fio_entry.pack()
-
 
     phone = customtkinter.CTkLabel(change_main, width=100, height=30, text="Номер раб. телефона")
     phone.pack()
