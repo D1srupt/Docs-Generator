@@ -1,6 +1,8 @@
 import customtkinter as CTk
 from PIL import Image, ImageTk
 import os.path
+from docx import Document
+from docx.shared import Pt
 
 
 def on_document_sz_select(second):
@@ -72,7 +74,20 @@ def on_document_sz_select(second):
     select_button.pack()
     select_button.place(x=110, y=615)
 
-    generate_button = CTk.CTkButton(third, text="Сформировать документ")
+    def sz_reform_def():
+        from UI import fio, phn
+        print('sdfs')
+        doc = Document('СЗ_шаблон.docx')
+        section = doc.sections[-1]
+        footer = section.footer
+        footer_para = footer.paragraphs[-1]
+        footer_para.text = "Исп. " + fio.get() + ' ' + 'тел. ' + phn.get()
+        run = footer_para.runs[0]
+        run.font.name = "Arial"
+        run.font.size = Pt(10)
+        doc.save('Temp.docx')
+
+    generate_button = CTk.CTkButton(third, text="Сформировать документ", command=sz_reform_def)
     generate_button.pack()
     generate_button.place(x=117, y=650)
 
