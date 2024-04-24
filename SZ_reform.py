@@ -5,8 +5,8 @@ from docx import Document
 from docx.shared import Pt
 
 
-def on_document_sz_select(second):
-    second.destroy()
+def on_document_sz_select(second, fio, phn):
+    second.withdraw()
     file_path = os.path.dirname(os.path.realpath((__file__)))
     image_1 = CTk.CTkImage(Image.open(file_path + "/dark.png"), size=(35, 35))
     image_2 = CTk.CTkImage(Image.open(file_path + "/light.png"), size=(35, 35))
@@ -75,7 +75,6 @@ def on_document_sz_select(second):
     select_button.place(x=110, y=615)
 
     def sz_reform_def():
-        from UI import fio, phn
         print('sdfs')
         doc = Document('СЗ_шаблон.docx')
         section = doc.sections[-1]
@@ -91,21 +90,21 @@ def on_document_sz_select(second):
     generate_button.pack()
     generate_button.place(x=117, y=650)
 
-    def set_light_theme():
-        CTk.set_appearance_mode("Dark")
-        dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
-        dark_on.pack()
-        dark_on.place(x=340, y=700)
-
-    def set_dark_theme():
-        CTk.set_appearance_mode("light")
-        dark_off = CTk.CTkButton(third, width=35, height=35, text="", command=set_light_theme, image=image_1)
-        dark_off.pack()
-        dark_off.place(x=340, y=700)
-
-    dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
-    dark_on.pack()
-    dark_on.place(x=340, y=700)
+    # def set_light_theme():
+    #     CTk.set_appearance_mode("Dark")
+    #     dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
+    #     dark_on.pack()
+    #     dark_on.place(x=340, y=700)
+    #
+    # def set_dark_theme():
+    #     CTk.set_appearance_mode("light")
+    #     dark_off = CTk.CTkButton(third, width=35, height=35, text="", command=set_light_theme, image=image_1)
+    #     dark_off.pack()
+    #     dark_off.place(x=340, y=700)
+    #
+    # dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
+    # dark_on.pack()
+    # dark_on.place(x=340, y=700)
 
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()

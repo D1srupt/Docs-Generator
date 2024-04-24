@@ -3,8 +3,8 @@ import SZ_reform
 import Prikaz_reform
 import Pismo_reform
 
-def second_tile(root):
-    root.destroy()
+def second_tile(root, fio, phn):
+    root.withdraw()
     CTk.set_appearance_mode("Dark")
     CTk.set_default_color_theme("blue")
     second = CTk.CTk()
@@ -17,7 +17,7 @@ def second_tile(root):
     typedoc = CTk.CTkLabel(second, text='Выберите тип документа')
     typedoc.pack()
 
-    sz = CTk.CTkButton(second, text='Служебная записка', command=lambda: SZ_reform.on_document_sz_select(second))
+    sz = CTk.CTkButton(second, text='Служебная записка', command=lambda: SZ_reform.on_document_sz_select(second, fio, phn))
     sz.pack()
     sz.place(x=55, y=40)
 
