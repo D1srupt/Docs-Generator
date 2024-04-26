@@ -1,8 +1,10 @@
 import customtkinter as CTk
-from PIL import Image, ImageTk
+from PIL import Image
 import os.path
 from docx import Document
 from docx.shared import Pt
+import CTkMessagebox
+from tkinter import ttk
 
 
 def on_document_sz_select(second, fio, phn):
@@ -10,11 +12,6 @@ def on_document_sz_select(second, fio, phn):
     file_path = os.path.dirname(os.path.realpath((__file__)))
     image_1 = CTk.CTkImage(Image.open(file_path + "/dark.png"), size=(35, 35))
     image_2 = CTk.CTkImage(Image.open(file_path + "/light.png"), size=(35, 35))
-    print("Выбрана служебка")
-    # addr_entry.configure(state="disabled")
-    # answer_entry.configure(state="disabled")
-    # male_radio.configure(state="disabled")
-    # female_radio.configure(state="disabled")
     CTk.set_appearance_mode("Dark")
     CTk.set_default_color_theme("blue")
 
@@ -26,15 +23,6 @@ def on_document_sz_select(second, fio, phn):
 
     address_label = CTk.CTkLabel(third, text="Выберите адресата:")
     address_label.pack()
-
-    gender_var = CTk.StringVar()
-    gender_var.set("Мужской")
-    male_radio = CTk.CTkRadioButton(third, text="Мужской", variable=gender_var, radiobutton_width=15,
-                                    radiobutton_height=15, value="Мужской")
-    male_radio.pack()
-    female_radio = CTk.CTkRadioButton(third, text="Женский", variable=gender_var, radiobutton_width=15,
-                                      radiobutton_height=15, value="Женский")
-    female_radio.pack()
 
     address_var = CTk.StringVar()
     address_combobox = CTk.CTkComboBox(third, width=300, variable=address_var,
@@ -75,7 +63,10 @@ def on_document_sz_select(second, fio, phn):
     select_button.place(x=110, y=615)
 
     def sz_reform_def():
-        print('sdfs')
+        theme = theme_entry.get()
+        choice = address_combobox.get()
+        content = content_entry.get("1.0", "end-1c")
+        save_path = save_path_entry.get()
         doc = Document('СЗ_шаблон.docx')
         section = doc.sections[-1]
         footer = section.footer
@@ -86,25 +77,109 @@ def on_document_sz_select(second, fio, phn):
         run.font.size = Pt(10)
         doc.save('Temp.docx')
 
+        docu = Document('Temp.docx')
+
+        for table in docu.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    for paragraph in cell.paragraphs:
+                        if "(Адресат)" in paragraph.text:
+                            print('найден адресат')
+                            if choice == "Генеральный директор":
+                                print('найден ГД')
+                                paragraph.text = paragraph.text.replace("(Адресат)", "Генеральному директору")
+                                run = paragraph.runs[0]
+                                run.font.name = "Arial"
+                                run.font.size = Pt(14)
+                            elif choice == "Главный инженер":
+                                paragraph.text = paragraph.text.replace("(Адресат)", "Главному инженеру")
+                                run = paragraph.runs[0]
+                                run.font.name = "Arial"
+                                run.font.size = Pt(14)
+                            elif choice == "Директор по безопасности":
+                                paragraph.text = paragraph.text.replace("(Адресат)", "Директору по безопасности")
+                                run = paragraph.runs[0]
+                                run.font.name = "Arial"
+                                run.font.size = Pt(14)
+
+                        if "(Имя и Отчество)" in paragraph.text:
+                            if choice == "Генеральный директор":
+                                paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Павел Гаврилович")
+                                run = paragraph.runs[0]
+                                run.font.name = "Arial"
+                                run.font.size = Pt(14)
+                            elif choice == "Главный инженер":
+                                paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Денис Александрович")
+                                run = paragraph.runs[0]
+                                run.font.name = "Arial"
+                                run.font.size = Pt(14)
+                            elif choice == "Директор по безопасности":
+                                paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Андрей Владимирович")
+                                run = paragraph.runs[0]
+                                run.font.name = "Arial"
+                                run.font.size = Pt(14)
+
+                        if "(Тема)" in paragraph.text:
+                            print('найдена тема')
+                            paragraph.text = paragraph.text.replace("(Тема)", theme)
+                            run = paragraph.runs[0]
+                            run.font.name = "Arial"
+                            run.font.size = Pt(14)
+
+        # Добавим замену для текста, не находящегося в таблице
+        for paragraph in docu.paragraphs:
+            if choice == "Генеральный директор":
+                print('найдено')
+                paragraph.text = paragraph.text.replace("(Адресат)", "Генеральному директору")
+                run = paragraph.runs[0]
+                run.font.name = "Arial"
+                run.font.size = Pt(14)
+            elif choice == "Главный инженер":
+                paragraph.text = paragraph.text.replace("(Адресат)", "Главный инженер")
+                run = paragraph.runs[0]
+                run.font.name = "Arial"
+                run.font.size = Pt(14)
+            elif choice == "Директор по безопасности":
+                paragraph.text = paragraph.text.replace("(Адресат)", "Директор по безопасности")
+                run = paragraph.runs[0]
+                run.font.name = "Arial"
+                run.font.size = Pt(14)
+            if "(Имя и Отчество)" in paragraph.text:
+                if choice == "Генеральный директор":
+                    paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Павел Гаврилович")
+                    run = paragraph.runs[0]
+                    run.font.name = "Arial"
+                    run.font.size = Pt(14)
+                elif choice == "Главный инженер":
+                    paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Денис Александрович")
+                    run = paragraph.runs[0]
+                    run.font.name = "Arial"
+                    run.font.size = Pt(14)
+                elif choice == "Директор по безопасности":
+                    paragraph.text = paragraph.text.replace("(Имя и Отчество)", "Андрей Владимирович")
+                    run = paragraph.runs[0]
+                    run.font.name = "Arial"
+                    run.font.size = Pt(14)
+                if "(Тема)" in paragraph.text:
+                    paragraph.text = paragraph.text.replace("(Тема)", theme)
+                    run = paragraph.runs[0]
+                    run.font.name = "Arial"
+                    run.font.size = Pt(14)
+
+            if "(Содержание)" in paragraph.text:
+                print('содержание найдено')
+                paragraph.text = paragraph.text.replace("(Содержание)", content)
+                run = paragraph.runs[0]
+                run.font.name = "Arial"
+                run.font.size = Pt(14)
+
+        docu.save(save_path)
+        os.remove("Temp.docx")
+        CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Документ успешно сформирован!")
+
     generate_button = CTk.CTkButton(third, text="Сформировать документ", command=sz_reform_def)
     generate_button.pack()
     generate_button.place(x=117, y=650)
-
-    # def set_light_theme():
-    #     CTk.set_appearance_mode("Dark")
-    #     dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
-    #     dark_on.pack()
-    #     dark_on.place(x=340, y=700)
-    #
-    # def set_dark_theme():
-    #     CTk.set_appearance_mode("light")
-    #     dark_off = CTk.CTkButton(third, width=35, height=35, text="", command=set_light_theme, image=image_1)
-    #     dark_off.pack()
-    #     dark_off.place(x=340, y=700)
-    #
-    # dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
-    # dark_on.pack()
-    # dark_on.place(x=340, y=700)
 
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()
