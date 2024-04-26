@@ -1,17 +1,12 @@
 import customtkinter as CTk
-from PIL import Image
-import os.path
 from docx import Document
 from docx.shared import Pt
 import CTkMessagebox
-from tkinter import ttk
+import os.path
 
 
 def on_document_sz_select(second, fio, phn):
     second.withdraw()
-    file_path = os.path.dirname(os.path.realpath((__file__)))
-    image_1 = CTk.CTkImage(Image.open(file_path + "/dark.png"), size=(35, 35))
-    image_2 = CTk.CTkImage(Image.open(file_path + "/light.png"), size=(35, 35))
     CTk.set_appearance_mode("Dark")
     CTk.set_default_color_theme("blue")
 
@@ -84,9 +79,7 @@ def on_document_sz_select(second, fio, phn):
                 for cell in row.cells:
                     for paragraph in cell.paragraphs:
                         if "(Адресат)" in paragraph.text:
-                            print('найден адресат')
                             if choice == "Генеральный директор":
-                                print('найден ГД')
                                 paragraph.text = paragraph.text.replace("(Адресат)", "Генеральному директору")
                                 run = paragraph.runs[0]
                                 run.font.name = "Arial"
@@ -129,7 +122,6 @@ def on_document_sz_select(second, fio, phn):
         # Добавим замену для текста, не находящегося в таблице
         for paragraph in docu.paragraphs:
             if choice == "Генеральный директор":
-                print('найдено')
                 paragraph.text = paragraph.text.replace("(Адресат)", "Генеральному директору")
                 run = paragraph.runs[0]
                 run.font.name = "Arial"
@@ -167,7 +159,6 @@ def on_document_sz_select(second, fio, phn):
                     run.font.size = Pt(14)
 
             if "(Содержание)" in paragraph.text:
-                print('содержание найдено')
                 paragraph.text = paragraph.text.replace("(Содержание)", content)
                 run = paragraph.runs[0]
                 run.font.name = "Arial"
