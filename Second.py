@@ -6,7 +6,6 @@ import Pismo_reform
 
 def second_tile(root, fio, phn):
     root.withdraw()
-    CTk.set_appearance_mode("Dark")
     CTk.set_default_color_theme("blue")
     second = CTk.CTk()
     second.geometry(

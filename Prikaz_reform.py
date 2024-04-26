@@ -7,7 +7,6 @@ import os.path
 
 def on_document_prikaz_select(second, fio, phn):
     second.withdraw()
-    CTk.set_appearance_mode("Dark")
     CTk.set_default_color_theme("blue")
 
     third = CTk.CTk()
