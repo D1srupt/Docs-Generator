@@ -3,6 +3,7 @@ import SZ_reform
 import Prikaz_reform
 import Pismo_reform
 
+
 def second_tile(root, fio, phn):
     root.withdraw()
     CTk.set_appearance_mode("Dark")
@@ -17,11 +18,13 @@ def second_tile(root, fio, phn):
     typedoc = CTk.CTkLabel(second, text='Выберите тип документа')
     typedoc.pack()
 
-    sz = CTk.CTkButton(second, text='Служебная записка', command=lambda: SZ_reform.on_document_sz_select(second, fio, phn))
+    sz = CTk.CTkButton(second, text='Служебная записка',
+                       command=lambda: SZ_reform.on_document_sz_select(second, fio, phn))
     sz.pack()
     sz.place(x=55, y=40)
 
-    prikaz = CTk.CTkButton(second, text='Приказ', command=lambda: Prikaz_reform.on_document_prikaz_select(second, fio, phn))
+    prikaz = CTk.CTkButton(second, text='Приказ',
+                           command=lambda: Prikaz_reform.on_document_prikaz_select(second, fio, phn))
     prikaz.pack()
     prikaz.place(x=55, y=110)
 

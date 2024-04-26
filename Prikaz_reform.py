@@ -76,11 +76,11 @@ def on_document_prikaz_select(second, fio, phn):
 
         # Добавим замену для текста, не находящегося в таблице
         for paragraph in docu.paragraphs:
-                if "(Содержание)" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("(Содержание)", content)
-                    run = paragraph.runs[0]
-                    run.font.name = "Arial"
-                    run.font.size = Pt(14)
+            if "(Содержание)" in paragraph.text:
+                paragraph.text = paragraph.text.replace("(Содержание)", content)
+                run = paragraph.runs[0]
+                run.font.name = "Arial"
+                run.font.size = Pt(14)
 
         docu.save(save_path)
         os.remove("Temp.docx")

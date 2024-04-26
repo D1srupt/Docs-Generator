@@ -3,7 +3,7 @@ import Second
 import os.path
 from PIL import Image
 
-file_path = os.path.dirname(os.path.realpath((__file__)))
+file_path = os.path.dirname(os.path.realpath(__file__))
 image_1 = CTk.CTkImage(Image.open(file_path + "/dark.png"), size=(35, 35))
 image_2 = CTk.CTkImage(Image.open(file_path + "/light.png"), size=(35, 35))
 
