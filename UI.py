@@ -39,10 +39,6 @@ def create():
     phn = CTk.CTkEntry(root, width=220)
     phn.pack()
 
-    global number, value
-    number = phn.get()
-    value = fio.get()
-
     ok_but = CTk.CTkButton(root, text='Далее')
     ok_but.configure(state='disabled')
     ok_but.pack()
