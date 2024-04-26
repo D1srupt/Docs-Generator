@@ -1,18 +1,12 @@
 import customtkinter as CTk
-from PIL import Image, ImageTk
+from docx import Document
+from docx.shared import Pt
+import CTkMessagebox
 import os.path
 
 
-def on_document_prikaz_select(second):
-    second.withdrow()
-    file_path = os.path.dirname(os.path.realpath((__file__)))
-    image_1 = CTk.CTkImage(Image.open(file_path + "/dark.png"), size=(35, 35))
-    image_2 = CTk.CTkImage(Image.open(file_path + "/light.png"), size=(35, 35))
-    print("Выбран приказ")
-    # addr_entry.configure(state="disabled")
-    # answer_entry.configure(state="disabled")
-    # male_radio.configure(state="disabled")
-    # female_radio.configure(state="disabled")
+def on_document_prikaz_select(second, fio, phn):
+    second.withdraw()
     CTk.set_appearance_mode("Dark")
     CTk.set_default_color_theme("blue")
 
@@ -54,24 +48,50 @@ def on_document_prikaz_select(second):
     select_button.pack()
     select_button.place(x=110, y=615)
 
-    generate_button = CTk.CTkButton(third, text="Сформировать документ")
+    def sz_reform_def():
+        theme = theme_entry.get()
+        content = content_entry.get("1.0", "end-1c")
+        save_path = save_path_entry.get()
+        doc = Document('Приказ_шаблон.docx')
+        section = doc.sections[-1]
+        footer = section.footer
+        footer_para = footer.paragraphs[-1]
+        footer_para.text = "Исп. " + fio.get() + ' ' + 'тел. ' + phn.get()
+        run = footer_para.runs[0]
+        run.font.name = "Arial"
+        run.font.size = Pt(10)
+        doc.save('Temp.docx')
+
+        docu = Document('Temp.docx')
+
+        for table in docu.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    for paragraph in cell.paragraphs:
+                        if "(Тема)" in paragraph.text:
+                            paragraph.text = paragraph.text.replace("(Тема)", theme)
+                            run = paragraph.runs[0]
+                            run.font.name = "Arial"
+                            run.font.size = Pt(14)
+
+        # Добавим замену для текста, не находящегося в таблице
+        for paragraph in docu.paragraphs:
+                if "(Содержание)" in paragraph.text:
+                    paragraph.text = paragraph.text.replace("(Содержание)", content)
+                    run = paragraph.runs[0]
+                    run.font.name = "Arial"
+                    run.font.size = Pt(14)
+
+        docu.save(save_path)
+        os.remove("Temp.docx")
+        CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Документ успешно сформирован!")
+
+    generate_button = CTk.CTkButton(third, text="Сформировать документ", command=sz_reform_def)
     generate_button.pack()
     generate_button.place(x=117, y=650)
 
-    def set_light_theme():
-        CTk.set_appearance_mode("Dark")
-        dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
-        dark_on.pack()
-        dark_on.place(x=340, y=700)
-
-    def set_dark_theme():
-        CTk.set_appearance_mode("light")
-        dark_off = CTk.CTkButton(third, width=35, height=35, text="", command=set_light_theme, image=image_1)
-        dark_off.pack()
-        dark_off.place(x=340, y=700)
-
-    dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
-    dark_on.pack()
-    dark_on.place(x=340, y=700)
+    select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
+    select_button.pack()
+    select_button.place(x=110, y=615)
 
     third.mainloop()

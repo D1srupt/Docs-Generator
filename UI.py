@@ -7,8 +7,8 @@ file_path = os.path.dirname(os.path.realpath((__file__)))
 image_1 = CTk.CTkImage(Image.open(file_path + "/dark.png"), size=(35, 35))
 image_2 = CTk.CTkImage(Image.open(file_path + "/light.png"), size=(35, 35))
 
-def create():
 
+def create():
     CTk.set_appearance_mode("Dark")
     CTk.set_default_color_theme("blue")
 

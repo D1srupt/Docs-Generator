@@ -21,7 +21,7 @@ def second_tile(root, fio, phn):
     sz.pack()
     sz.place(x=55, y=40)
 
-    prikaz = CTk.CTkButton(second, text='Приказ', command=lambda: Prikaz_reform.on_document_prikaz_select(second))
+    prikaz = CTk.CTkButton(second, text='Приказ', command=lambda: Prikaz_reform.on_document_prikaz_select(second, fio, phn))
     prikaz.pack()
     prikaz.place(x=55, y=110)
 
