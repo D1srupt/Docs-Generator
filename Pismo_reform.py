@@ -1,19 +1,13 @@
 import customtkinter as CTk
-from PIL import Image, ImageTk
+from docx import Document
+from docx.shared import Pt, RGBColor
+import CTkMessagebox
 import os.path
 
 
-def on_document_pismo_select(second):
-    second.destroy()
-    file_path = os.path.dirname(os.path.realpath((__file__)))
-    image_1 = CTk.CTkImage(Image.open(file_path + "/dark.png"), size=(35, 35))
-    image_2 = CTk.CTkImage(Image.open(file_path + "/light.png"), size=(35, 35))
-    print("Выбрано письмо")
-    # addr_entry.configure(state="disabled")
-    # answer_entry.configure(state="disabled")
-    # male_radio.configure(state="disabled")
-    # female_radio.configure(state="disabled")
-    CTk.set_appearance_mode("Dark")
+
+def on_document_pismo_select(second, fio, phn):
+    second.withdraw()
     CTk.set_default_color_theme("blue")
 
     third = CTk.CTk()
@@ -22,23 +16,26 @@ def on_document_pismo_select(second):
     third.resizable(width=False, height=False)
     third.title("Служебная записка")
 
-    address_label = CTk.CTkLabel(third, text="Выберите адресата:")
+    address_label = CTk.CTkLabel(third, text="Укажите занимаемую должность адресата:")
     address_label.pack()
+
+    address_entry = CTk.CTkEntry(third, width=300)
+    address_entry.pack()
+
+    io_label = CTk.CTkLabel(third, text="Укажите имя и отчество адресата:")
+    io_label.pack()
+
+    io_entry = CTk.CTkEntry(third, width=300)
+    io_entry.pack()
 
     gender_var = CTk.StringVar()
     gender_var.set("Мужской")
     male_radio = CTk.CTkRadioButton(third, text="Мужской", variable=gender_var, radiobutton_width=15,
-                                    radiobutton_height=15, value="Мужской")
+                                              radiobutton_height=15, value="Мужской")
     male_radio.pack()
     female_radio = CTk.CTkRadioButton(third, text="Женский", variable=gender_var, radiobutton_width=15,
-                                      radiobutton_height=15, value="Женский")
+                                                radiobutton_height=15, value="Женский")
     female_radio.pack()
-
-    address_var = CTk.StringVar()
-    address_combobox = CTk.CTkComboBox(third, width=300, variable=address_var,
-                                       values=["Генеральный директор", "Главный инженер",
-                                               "Директор по безопасности"])
-    address_combobox.pack()
 
     theme_label = CTk.CTkLabel(third, text="Введите тему:")
     theme_label.pack()
@@ -84,25 +81,64 @@ def on_document_pismo_select(second):
     select_button.pack()
     select_button.place(x=110, y=615)
 
-    generate_button = CTk.CTkButton(third, text="Сформировать документ")
+    def sz_reform_def():
+        answer = answer_entry.get()
+        pol = gender_var.get()
+        color = RGBColor(91, 155, 213)
+        io = io_entry.get()
+        addr = addr_entry.get()
+        theme = theme_entry.get()
+        choice = address_entry.get()
+        content = content_entry.get("1.0", "end-1c")
+        save_path = save_path_entry.get()
+        doc = Document('Письмо_шаблон.docx')
+        section = doc.sections[-1]
+        footer = section.footer
+        footer_para = footer.paragraphs[-1]
+        footer_para.text = "Исп. " + fio.get() + ' ' + 'тел. ' + phn.get()
+        run = footer_para.runs[0]
+        run.font.name = "Arial"
+        run.font.size = Pt(10)
+        doc.save('Temp.docx')
+
+        docu = Document('Temp.docx')
+
+        for table in docu.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    for paragraph in cell.paragraphs:
+                        if "(Адресат)" in paragraph.text:
+                            paragraph.text = paragraph.text.replace("(Адресат)", choice)
+                        if "(Имя и Отчество)" in paragraph.text:
+                            paragraph.text = paragraph.text.replace("(Имя и Отчество)", io_entry)
+                        if "(Тема)" in paragraph.text:
+                            paragraph.text = paragraph.text.replace("(Тема)", theme)
+                        if "(На какое письмо)" in paragraph.text:
+                            paragraph.text = paragraph.text.replace("(На какое письмо)", answer)
+                            run = paragraph.runs[0]
+                            run.color = color
+                        if "(Адрес)" in paragraph.text:
+                            paragraph.text = paragraph.text.replace("(Адрес)", addr)
+
+        # Добавим замену для текста, не находящегося в таблице
+        for paragraph in docu.paragraphs:
+            paragraph.text = paragraph.text.replace("(Адресат)", choice)
+            if pol == "Мужской":
+                paragraph.text = paragraph.text.replace("(Пол)", "ый")
+            elif pol == "Женский":
+                paragraph.text = paragraph.text.replace("(Пол)", "ая")
+            if "(Имя и Отчество)" in paragraph.text:
+                paragraph.text = paragraph.text.replace("(Имя и Отчество)", io)
+            if "(Содержание)" in paragraph.text:
+                paragraph.text = paragraph.text.replace("(Содержание)", content)
+
+        docu.save(save_path)
+        os.remove("Temp.docx")
+        CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Документ успешно сформирован!")
+
+    generate_button = CTk.CTkButton(third, text="Сформировать документ", command=sz_reform_def)
     generate_button.pack()
     generate_button.place(x=117, y=650)
-
-    def set_light_theme():
-        CTk.set_appearance_mode("Dark")
-        dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
-        dark_on.pack()
-        dark_on.place(x=340, y=700)
-
-    def set_dark_theme():
-        CTk.set_appearance_mode("light")
-        dark_off = CTk.CTkButton(third, width=35, height=35, text="", command=set_light_theme, image=image_1)
-        dark_off.pack()
-        dark_off.place(x=340, y=700)
-
-    dark_on = CTk.CTkButton(third, width=35, height=35, text="", command=set_dark_theme, image=image_2)
-    dark_on.pack()
-    dark_on.place(x=340, y=700)
 
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()
