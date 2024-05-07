@@ -4,10 +4,10 @@ from docx.shared import Pt, RGBColor
 import CTkMessagebox
 import os.path
 import json
+import Second
 
 
-
-def on_document_pismo_select(second, fio, phn):
+def on_document_pismo_select(root, second, fio, phn):
 
     with open("female_patronymics.json", "r", encoding='utf-8') as file:
         data = json.load(file)
@@ -39,14 +39,6 @@ def on_document_pismo_select(second, fio, phn):
     o_entry = CTk.CTkEntry(third, width=300)
     o_entry.pack()
 
-    # gender_var = CTk.StringVar()
-    # gender_var.set("Мужской")
-    # male_radio = CTk.CTkRadioButton(third, text="Мужской", variable=gender_var, radiobutton_width=15,
-    #                                           radiobutton_height=15, value="Мужской")
-    # male_radio.pack()
-    # female_radio = CTk.CTkRadioButton(third, text="Женский", variable=gender_var, radiobutton_width=15,
-    #                                             radiobutton_height=15, value="Женский")
-    # female_radio.pack()
 
     theme_label = CTk.CTkLabel(third, text="Введите тему:")
     theme_label.pack()
@@ -90,7 +82,7 @@ def on_document_pismo_select(second, fio, phn):
 
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()
-    select_button.place(x=110, y=615)
+    select_button.place(x=110, y=630)
 
     def sz_reform_def(patronymic):
         answer = answer_entry.get()
@@ -143,17 +135,21 @@ def on_document_pismo_select(second, fio, phn):
             if "(Содержание)" in paragraph.text:
                 paragraph.text = paragraph.text.replace("(Содержание)", content)
 
-
         docu.save(save_path)
         os.remove("Temp.docx")
         CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Документ успешно сформирован!")
 
     generate_button = CTk.CTkButton(third, text="Сформировать документ", command=lambda: sz_reform_def(o_entry.get()))
     generate_button.pack()
-    generate_button.place(x=117, y=650)
+    generate_button.place(x=117, y=665)
 
-    select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
-    select_button.pack()
-    select_button.place(x=110, y=615)
+    def go_back():
+        third.destroy()
+        Second.second_tile(root, fio, phn)
+
+    generate_more = CTk.CTkButton(third, text="Сформировать другой документ", command=go_back)
+    generate_more.pack()
+    generate_more.place(x=95, y=700)
+
 
     third.mainloop()

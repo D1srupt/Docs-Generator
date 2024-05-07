@@ -18,16 +18,16 @@ def second_tile(root, fio, phn):
     typedoc.pack()
 
     sz = CTk.CTkButton(second, text='Служебная записка',
-                       command=lambda: SZ_reform.on_document_sz_select(second, fio, phn))
+                       command=lambda: SZ_reform.on_document_sz_select(root, second, fio, phn))
     sz.pack()
     sz.place(x=55, y=40)
 
     prikaz = CTk.CTkButton(second, text='Приказ',
-                           command=lambda: Prikaz_reform.on_document_prikaz_select(second, fio, phn))
+                           command=lambda: Prikaz_reform.on_document_prikaz_select(root, second, fio, phn))
     prikaz.pack()
     prikaz.place(x=55, y=110)
 
-    pismo = CTk.CTkButton(second, text='Письмо', command=lambda: Pismo_reform.on_document_pismo_select(second, fio, phn))
+    pismo = CTk.CTkButton(second, text='Письмо', command=lambda: Pismo_reform.on_document_pismo_select(root, second, fio, phn))
     pismo.pack()
     pismo.place(x=55, y=180)
 
