@@ -17,7 +17,8 @@ def on_document_pismo_select(root, second, fio, phn):
 
     third = CTk.CTk()
     third.geometry(
-        "400x750+{}+{}".format(int(third.winfo_screenwidth() / 2 - 150), int(third.winfo_screenheight() / 2 - 300)))
+        "400x750+{}+{}".format(int(third.winfo_screenwidth() / 2 - 150),
+                               int(third.winfo_screenheight() / 2 - 300)))
     third.resizable(width=False, height=False)
     third.title("Служебная записка")
 
@@ -38,7 +39,6 @@ def on_document_pismo_select(root, second, fio, phn):
 
     o_entry = CTk.CTkEntry(third, width=300)
     o_entry.pack()
-
 
     theme_label = CTk.CTkLabel(third, text="Введите тему:")
     theme_label.pack()
@@ -86,7 +86,6 @@ def on_document_pismo_select(root, second, fio, phn):
 
     def sz_reform_def(patronymic):
         answer = answer_entry.get()
-        # pol = gender_var.get()
         color = RGBColor(91, 155, 213)
         io = io_entry.get() + ' ' + o_entry.get()
         addr = addr_entry.get()
@@ -137,19 +136,23 @@ def on_document_pismo_select(root, second, fio, phn):
 
         docu.save(save_path)
         os.remove("Temp.docx")
-        CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Документ успешно сформирован!")
+        msg = CTkMessagebox.CTkMessagebox(
+            title="Docs Generator",
+            message="Документ успешно сформирован! Хотите сформировать еще?",
+            icon='check',
+            option_1='Да',
+            option_2='Нет')
+
+        if msg.get() == 'Да':
+            third.destroy()
+            Second.second_tile(root, fio, phn)
+        if msg.get() == 'Нет':
+            root.destroy()
+            second.destroy()
+            third.destroy()
 
     generate_button = CTk.CTkButton(third, text="Сформировать документ", command=lambda: sz_reform_def(o_entry.get()))
     generate_button.pack()
     generate_button.place(x=117, y=665)
-
-    def go_back():
-        third.destroy()
-        Second.second_tile(root, fio, phn)
-
-    generate_more = CTk.CTkButton(third, text="Сформировать другой документ", command=go_back)
-    generate_more.pack()
-    generate_more.place(x=95, y=700)
-
 
     third.mainloop()

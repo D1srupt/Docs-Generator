@@ -84,7 +84,20 @@ def on_document_prikaz_select(root, second, fio, phn):
 
         docu.save(save_path)
         os.remove("Temp.docx")
-        CTkMessagebox.CTkMessagebox(title="Docs Generator", message="Документ успешно сформирован!")
+        msg = CTkMessagebox.CTkMessagebox(
+            title="Docs Generator",
+            message="Документ успешно сформирован! Хотите сформировать еще?",
+            icon='check',
+            option_1='Да',
+            option_2='Нет')
+
+        if msg.get() == 'Да':
+            third.destroy()
+            Second.second_tile(root, fio, phn)
+        if msg.get() == 'Нет':
+            root.destroy()
+            second.destroy()
+            third.destroy()
 
     generate_button = CTk.CTkButton(third, text="Сформировать документ", command=sz_reform_def)
     generate_button.pack()
@@ -93,13 +106,5 @@ def on_document_prikaz_select(root, second, fio, phn):
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()
     select_button.place(x=110, y=615)
-
-    def go_back():
-        third.destroy()
-        Second.second_tile(root, fio, phn)
-
-    generate_more = CTk.CTkButton(third, text="Сформировать другой документ", command=go_back)
-    generate_more.pack()
-    generate_more.place(x=95, y=700)
 
     third.mainloop()

@@ -27,7 +27,8 @@ def second_tile(root, fio, phn):
     prikaz.pack()
     prikaz.place(x=55, y=110)
 
-    pismo = CTk.CTkButton(second, text='Письмо', command=lambda: Pismo_reform.on_document_pismo_select(root, second, fio, phn))
+    pismo = CTk.CTkButton(second, text='Письмо',
+                          command=lambda: Pismo_reform.on_document_pismo_select(root, second, fio, phn))
     pismo.pack()
     pismo.place(x=55, y=180)
 
