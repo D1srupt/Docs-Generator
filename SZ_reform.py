@@ -45,8 +45,9 @@ def on_document_sz_select(root, second, fio, phn):
     save_path_label = CTk.CTkLabel(third, text="Выберите место сохранения:")
     save_path_label.pack()
 
-    save_path_entry = CTk.CTkEntry(third, width=300)
+    save_path_entry = CTk.CTkEntry(third, width=50)
     save_path_entry.pack()
+    save_path_entry.place(x=110, y=370)
 
     def select_save_path():
         save_path = CTk.filedialog.asksaveasfilename(defaultextension=".docx",
@@ -56,7 +57,7 @@ def on_document_sz_select(root, second, fio, phn):
 
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()
-    select_button.place(x=110, y=615)
+    select_button.place(x=110, y=370)
 
     def sz_reform_def():
         theme = theme_entry.get()
@@ -183,18 +184,6 @@ def on_document_sz_select(root, second, fio, phn):
     generate_button.pack()
     generate_button.place(x=117, y=650)
 
-    select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
-    select_button.pack()
-    select_button.place(x=110, y=615)
-
-    def closeEvent(self, event):
-        reply = CTkMessagebox.CTkMessagebox(self, title="Вы уверены, что хотите уйти?",
-            option_1='Да',
-            option_2='Нет')
-        if reply.get() == 'Да':
-            event.accept()
-        if reply.get() == 'Нет':
-            event.ignore()
 
     def on_closing():
         sys.exit()

@@ -72,8 +72,9 @@ def on_document_pismo_select(root, second, fio, phn):
     save_path_label = CTk.CTkLabel(third, text="Выберите место сохранения:")
     save_path_label.pack()
 
-    save_path_entry = CTk.CTkEntry(third, width=300)
+    save_path_entry = CTk.CTkEntry(third, width=50)
     save_path_entry.pack()
+    save_path_entry.place(x=110, y=595)
 
     def select_save_path():
         save_path = CTk.filedialog.asksaveasfilename(defaultextension=".docx",
@@ -83,7 +84,7 @@ def on_document_pismo_select(root, second, fio, phn):
 
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()
-    select_button.place(x=110, y=630)
+    select_button.place(x=110, y=595)
 
     def sz_reform_def(patronymic):
         answer = answer_entry.get()

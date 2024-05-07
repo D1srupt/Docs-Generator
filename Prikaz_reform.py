@@ -44,11 +44,11 @@ def on_document_prikaz_select(root, second, fio, phn):
 
     save_path_entry = CTk.CTkEntry(third, width=50)
     save_path_entry.pack()
-    save_path_entry.place(x=110, y=615)
+    save_path_entry.place(x=110, y=315)
 
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()
-    select_button.place(x=110, y=615)
+    select_button.place(x=110, y=315)
 
     def sz_reform_def():
         theme = theme_entry.get()
