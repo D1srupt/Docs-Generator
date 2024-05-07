@@ -1,9 +1,10 @@
+import sys
+
 import customtkinter as CTk
 from docx import Document
 from docx.shared import Pt
 import CTkMessagebox
 import os.path
-import Second
 
 
 def on_document_sz_select(root, second, fio, phn):
@@ -113,7 +114,6 @@ def on_document_sz_select(root, second, fio, phn):
                                 run.font.size = Pt(14)
 
                         if "(Тема)" in paragraph.text:
-                            print('найдена тема')
                             paragraph.text = paragraph.text.replace("(Тема)", theme)
                             run = paragraph.runs[0]
                             run.font.name = "Arial"
@@ -175,11 +175,9 @@ def on_document_sz_select(root, second, fio, phn):
 
         if msg.get() == 'Да':
             third.destroy()
-            Second.second_tile(root, fio, phn)
+            second.deiconify()
         if msg.get() == 'Нет':
-            root.destroy()
-            second.destroy()
-            third.destroy()
+            sys.exit()
 
     generate_button = CTk.CTkButton(third, text="Сформировать документ", command=sz_reform_def)
     generate_button.pack()
@@ -189,4 +187,18 @@ def on_document_sz_select(root, second, fio, phn):
     select_button.pack()
     select_button.place(x=110, y=615)
 
+    def closeEvent(self, event):
+        reply = CTkMessagebox.CTkMessagebox(self, title="Вы уверены, что хотите уйти?",
+            option_1='Да',
+            option_2='Нет')
+        if reply.get() == 'Да':
+            event.accept()
+        if reply.get() == 'Нет':
+            event.ignore()
+
+    def on_closing():
+        sys.exit()
+
+    third.protocol("WM_DELETE_WINDOW", on_closing)
     third.mainloop()
+

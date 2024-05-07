@@ -1,3 +1,5 @@
+import sys
+
 import customtkinter as CTk
 import SZ_reform
 import Prikaz_reform
@@ -32,4 +34,8 @@ def second_tile(root, fio, phn):
     pismo.pack()
     pismo.place(x=55, y=180)
 
+    def on_closing():
+        sys.exit()
+
+    second.protocol("WM_DELETE_WINDOW", on_closing)
     second.mainloop()

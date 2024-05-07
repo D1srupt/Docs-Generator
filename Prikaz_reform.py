@@ -1,9 +1,10 @@
+import sys
+
 import customtkinter as CTk
 from docx import Document
 from docx.shared import Pt
 import CTkMessagebox
 import os.path
-import Second
 
 
 def on_document_prikaz_select(root, second, fio, phn):
@@ -35,14 +36,15 @@ def on_document_prikaz_select(root, second, fio, phn):
     save_path_label = CTk.CTkLabel(third, text="Выберите место сохранения:")
     save_path_label.pack()
 
-    save_path_entry = CTk.CTkEntry(third, width=300)
-    save_path_entry.pack()
-
     def select_save_path():
         save_path = CTk.filedialog.asksaveasfilename(defaultextension=".docx",
                                                      filetypes=[("Word files", "*.docx")])
         save_path_entry.delete(0, "end")
         save_path_entry.insert(0, save_path)
+
+    save_path_entry = CTk.CTkEntry(third, width=50)
+    save_path_entry.pack()
+    save_path_entry.place(x=110, y=615)
 
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()
@@ -93,18 +95,16 @@ def on_document_prikaz_select(root, second, fio, phn):
 
         if msg.get() == 'Да':
             third.destroy()
-            Second.second_tile(root, fio, phn)
+            second.deiconify()
         if msg.get() == 'Нет':
-            root.destroy()
-            second.destroy()
-            third.destroy()
+            sys.exit()
 
     generate_button = CTk.CTkButton(third, text="Сформировать документ", command=sz_reform_def)
     generate_button.pack()
     generate_button.place(x=117, y=650)
 
-    select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
-    select_button.pack()
-    select_button.place(x=110, y=615)
+    def on_closing():
+        sys.exit()
 
+    third.protocol("WM_DELETE_WINDOW", on_closing)
     third.mainloop()

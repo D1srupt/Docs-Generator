@@ -1,10 +1,11 @@
+import sys
+
 import customtkinter as CTk
 from docx import Document
 from docx.shared import Pt, RGBColor
 import CTkMessagebox
 import os.path
 import json
-import Second
 
 
 def on_document_pismo_select(root, second, fio, phn):
@@ -145,14 +146,16 @@ def on_document_pismo_select(root, second, fio, phn):
 
         if msg.get() == 'Да':
             third.destroy()
-            Second.second_tile(root, fio, phn)
+            second.deiconify()
         if msg.get() == 'Нет':
-            root.destroy()
-            second.destroy()
-            third.destroy()
+            sys.exit()
 
     generate_button = CTk.CTkButton(third, text="Сформировать документ", command=lambda: sz_reform_def(o_entry.get()))
     generate_button.pack()
     generate_button.place(x=117, y=665)
 
+    def on_closing():
+        sys.exit()
+
+    third.protocol("WM_DELETE_WINDOW", on_closing)
     third.mainloop()

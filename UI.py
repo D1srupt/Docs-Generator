@@ -1,3 +1,4 @@
+import sys
 import customtkinter as CTk
 import Second
 import os.path
@@ -63,6 +64,10 @@ def create():
     fio.bind('<KeyRelease>', disactive)
     phn.bind('<KeyRelease>', disactive)
 
+    def on_closing():
+        sys.exit()
+
+    root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()
 
 
