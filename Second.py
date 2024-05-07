@@ -34,6 +34,14 @@ def second_tile(root, fio, phn):
     pismo.pack()
     pismo.place(x=55, y=180)
 
+    def back():
+        second.destroy()
+        root.deiconify()
+
+    arrow = CTk.CTkButton(second, width=25, height=25, text="←", command=back)
+    arrow.pack()
+    arrow.place(x=15, y=215)
+
     def on_closing():
         sys.exit()
 

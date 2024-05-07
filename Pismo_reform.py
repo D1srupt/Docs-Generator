@@ -21,7 +21,7 @@ def on_document_pismo_select(root, second, fio, phn):
         "400x750+{}+{}".format(int(third.winfo_screenwidth() / 2 - 150),
                                int(third.winfo_screenheight() / 2 - 300)))
     third.resizable(width=False, height=False)
-    third.title("Служебная записка")
+    third.title("Письмо")
 
     address_label = CTk.CTkLabel(third, text="Укажите занимаемую должность адресата:")
     address_label.pack()
@@ -156,6 +156,14 @@ def on_document_pismo_select(root, second, fio, phn):
 
     def on_closing():
         sys.exit()
+
+    def back():
+        third.destroy()
+        second.deiconify()
+
+    arrow = CTk.CTkButton(third, width=25, height=25, text="←", command=back)
+    arrow.pack()
+    arrow.place(x=15, y=710)
 
     third.protocol("WM_DELETE_WINDOW", on_closing)
     third.mainloop()

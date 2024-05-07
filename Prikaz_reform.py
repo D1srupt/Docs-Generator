@@ -106,5 +106,13 @@ def on_document_prikaz_select(root, second, fio, phn):
     def on_closing():
         sys.exit()
 
+    def back():
+        third.destroy()
+        second.deiconify()
+
+    arrow = CTk.CTkButton(third, width=25, height=25, text="←", command=back)
+    arrow.pack()
+    arrow.place(x=15, y=710)
+
     third.protocol("WM_DELETE_WINDOW", on_closing)
     third.mainloop()
