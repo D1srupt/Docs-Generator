@@ -18,6 +18,7 @@ def create():
                                          int(root.winfo_screenheight() / 2 - 100)))
     root.resizable(width=False, height=False)
     root.title("Генератор документов")
+    root.iconbitmap('капля.ico')
 
     def disactive(event):
         if fio.get() != "" and phn.get() != "":
