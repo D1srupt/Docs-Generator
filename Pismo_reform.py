@@ -22,41 +22,48 @@ def on_document_pismo_select(root, second, fio, phn):
                                int(third.winfo_screenheight() / 2 - 300)))
     third.resizable(width=False, height=False)
     third.title("Письмо")
+    third.iconbitmap('капля.ico')
 
     address_label = CTk.CTkLabel(third, text="Укажите занимаемую должность адресата:")
     address_label.pack()
 
-    address_entry = CTk.CTkEntry(third, width=300)
+    address_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
+                               border_color="#1f6aa5")
     address_entry.pack()
 
     io_label = CTk.CTkLabel(third, text="Укажите имя адресата:")
     io_label.pack()
 
-    io_entry = CTk.CTkEntry(third, width=300)
+    io_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
+                               border_color="#1f6aa5")
     io_entry.pack()
 
     o_label = CTk.CTkLabel(third, text="Укажите отчество адресата:")
     o_label.pack()
 
-    o_entry = CTk.CTkEntry(third, width=300)
+    o_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
+                               border_color="#1f6aa5")
     o_entry.pack()
 
     theme_label = CTk.CTkLabel(third, text="Введите тему:")
     theme_label.pack()
 
-    theme_entry = CTk.CTkEntry(third, width=300)
+    theme_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
+                               border_color="#1f6aa5")
     theme_entry.pack()
 
     answer_label = CTk.CTkLabel(third, text="Введите номер и дату входящего письма:")
     answer_label.pack()
 
-    answer_entry = CTk.CTkEntry(third, width=300)
+    answer_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
+                               border_color="#1f6aa5")
     answer_entry.pack()
 
     addr_label = CTk.CTkLabel(third, text="Введите адрес получателя:")
     addr_label.pack()
 
-    addr_entry = CTk.CTkEntry(third, width=300)
+    addr_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
+                               border_color="#1f6aa5")
     addr_entry.pack()
 
     content_label = CTk.CTkLabel(third, text="Введите содержание:")
@@ -65,26 +72,31 @@ def on_document_pismo_select(root, second, fio, phn):
     def on_paste():
         content_entry.paste()
 
-    content_entry = CTk.CTkTextbox(third, height=200, width=300)
+    content_entry = CTk.CTkTextbox(third, height=200, width=300, corner_radius=4, border_width=1,
+                                   border_color="#1f6aa5", fg_color='gray19')
     content_entry.bind('<Control-v>', on_paste)
     content_entry.pack()
 
     save_path_label = CTk.CTkLabel(third, text="Выберите место сохранения:")
     save_path_label.pack()
 
-    save_path_entry = CTk.CTkEntry(third, width=50)
+    save_path_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
+                               border_color="#1f6aa5", state='disabled')
     save_path_entry.pack()
-    save_path_entry.place(x=110, y=595)
+    save_path_entry.place(x=50, y=595)
 
     def select_save_path():
+        save_path_entry.configure(state='normal')
         save_path = CTk.filedialog.asksaveasfilename(defaultextension=".docx",
                                                      filetypes=[("Word files", "*.docx")])
         save_path_entry.delete(0, "end")
         save_path_entry.insert(0, save_path)
+        save_path_entry.configure(state='disabled')
+        generate_button.configure(state='normal')
 
-    select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
+    select_button = CTk.CTkButton(third, text="Выбрать место сохранения", corner_radius=10, command=select_save_path)
     select_button.pack()
-    select_button.place(x=110, y=595)
+    select_button.place(x=110, y=635)
 
     def sz_reform_def(patronymic):
         answer = answer_entry.get()
@@ -151,9 +163,10 @@ def on_document_pismo_select(root, second, fio, phn):
         if msg.get() == 'Нет':
             sys.exit()
 
-    generate_button = CTk.CTkButton(third, text="Сформировать документ", command=lambda: sz_reform_def(o_entry.get()))
+    generate_button = CTk.CTkButton(third, text="Сформировать документ", state='disabled',
+                                    width=100, height=50, fg_color='#c52222', hover_color='#9d1b1b', corner_radius=10,  command=lambda: sz_reform_def(o_entry.get()))
     generate_button.pack()
-    generate_button.place(x=117, y=665)
+    generate_button.place(x=117, y=685)
 
     def on_closing():
         sys.exit()

@@ -53,7 +53,7 @@ def on_document_prikaz_select(root, second, fio, phn):
     save_path_entry.pack()
     save_path_entry.place(x=50, y=315)
 
-    select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
+    select_button = CTk.CTkButton(third, text="Выбрать место сохранения", corner_radius=10, command=select_save_path)
     select_button.pack()
     select_button.place(x=110, y=370)
 
