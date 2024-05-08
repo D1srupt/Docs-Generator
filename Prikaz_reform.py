@@ -16,11 +16,13 @@ def on_document_prikaz_select(root, second, fio, phn):
         "400x750+{}+{}".format(int(third.winfo_screenwidth() / 2 - 150), int(third.winfo_screenheight() / 2 - 300)))
     third.resizable(width=False, height=False)
     third.title("Приказ")
+    third.iconbitmap('капля.ico')
 
     theme_label = CTk.CTkLabel(third, text="Введите тему:")
     theme_label.pack()
 
-    theme_entry = CTk.CTkEntry(third, width=300)
+    theme_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
+                               border_color="#1f6aa5")
     theme_entry.pack()
 
     content_label = CTk.CTkLabel(third, text="Введите содержание:")
@@ -29,7 +31,8 @@ def on_document_prikaz_select(root, second, fio, phn):
     def on_paste():
         content_entry.paste()
 
-    content_entry = CTk.CTkTextbox(third, height=200, width=300)
+    content_entry = CTk.CTkTextbox(third, height=200, width=300, corner_radius=4, border_width=1,
+                                   border_color="#1f6aa5", fg_color='gray19')
     content_entry.bind('<Control-v>', on_paste)
     content_entry.pack()
 
@@ -37,18 +40,22 @@ def on_document_prikaz_select(root, second, fio, phn):
     save_path_label.pack()
 
     def select_save_path():
+        save_path_entry.configure(state='normal')
         save_path = CTk.filedialog.asksaveasfilename(defaultextension=".docx",
                                                      filetypes=[("Word files", "*.docx")])
         save_path_entry.delete(0, "end")
         save_path_entry.insert(0, save_path)
+        save_path_entry.configure(state='disabled')
+        generate_button.configure(state='normal')
 
-    save_path_entry = CTk.CTkEntry(third, width=50)
+    save_path_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
+                               border_color="#1f6aa5", state='disabled')
     save_path_entry.pack()
-    save_path_entry.place(x=110, y=315)
+    save_path_entry.place(x=50, y=315)
 
     select_button = CTk.CTkButton(third, text="Выбрать место сохранения", command=select_save_path)
     select_button.pack()
-    select_button.place(x=110, y=315)
+    select_button.place(x=110, y=370)
 
     def sz_reform_def():
         theme = theme_entry.get()
@@ -99,9 +106,10 @@ def on_document_prikaz_select(root, second, fio, phn):
         if msg.get() == 'Нет':
             sys.exit()
 
-    generate_button = CTk.CTkButton(third, text="Сформировать документ", command=sz_reform_def)
+    generate_button = CTk.CTkButton(third, text="Сформировать документ", command=sz_reform_def, state='disabled',
+                                    width=200, height=70, fg_color='#c52222', hover_color='#9d1b1b', corner_radius=10)
     generate_button.pack()
-    generate_button.place(x=117, y=650)
+    generate_button.place(x=105, y=550)
 
     def on_closing():
         sys.exit()

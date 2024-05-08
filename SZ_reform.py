@@ -66,11 +66,12 @@ def on_document_sz_select(root, second, fio, phn):
     save_path_label.pack()
 
     save_path_entry = CTk.CTkEntry(third, width=300, corner_radius=4, border_width=1,
-                                   border_color="#1f6aa5")
+                                   border_color="#1f6aa5", state='disabled')
     save_path_entry.pack()
     save_path_entry.place(x=50, y=370)
 
     def select_save_path():
+        save_path_entry.configure(state='normal')
         save_path = CTk.filedialog.asksaveasfilename(defaultextension=".docx",
                                                      filetypes=[("Word files", "*.docx")])
         save_path_entry.delete(0, "end")
