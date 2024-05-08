@@ -42,7 +42,7 @@ def create():
                        border_color="#1f6aa5")
     phn.pack()
 
-    ok_but = CTk.CTkButton(root, text='Далее')
+    ok_but = CTk.CTkButton(root, text='Далее', corner_radius=10)
     ok_but.configure(state='disabled')
     ok_but.pack()
     ok_but.place(x=60, y=160)
