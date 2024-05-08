@@ -28,16 +28,18 @@ def create():
     ispol = CTk.CTkLabel(root, text='Введите данные исполнителя:')
     ispol.pack()
 
-    fiol = CTk.CTkLabel(root, text='ФИО')
+    fiol = CTk.CTkLabel(root, text='ФИО:')
     fiol.pack()
 
-    fio = CTk.CTkEntry(root, width=220)
+    fio = CTk.CTkEntry(root, width=220, placeholder_text='Иванов И.И.', corner_radius=4, border_width=1,
+                       border_color="#1f6aa5")
     fio.pack()
 
-    ph = CTk.CTkLabel(root, text='Номер рабочего телефона')
+    ph = CTk.CTkLabel(root, text='Номер рабочего телефона:')
     ph.pack()
 
-    phn = CTk.CTkEntry(root, width=220)
+    phn = CTk.CTkEntry(root, width=220, placeholder_text='1111', corner_radius=4, border_width=1,
+                       border_color="#1f6aa5")
     phn.pack()
 
     ok_but = CTk.CTkButton(root, text='Далее')
@@ -60,6 +62,10 @@ def create():
     dark_on = CTk.CTkButton(root, width=25, height=25, text="", command=set_dark_theme, image=image_2)
     dark_on.pack()
     dark_on.place(x=200, y=210)
+
+    disrupt = CTk.CTkLabel(root, text='Developed by E.Skorobogatko', width=20, height=20)
+    disrupt.pack()
+    disrupt.place(x=10, y=220)
 
     fio.bind('<KeyRelease>', disactive)
     phn.bind('<KeyRelease>', disactive)
