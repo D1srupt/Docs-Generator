@@ -32,7 +32,7 @@ def on_document_prikaz_select(root, second, fio, phn):
         content_entry.paste()
 
     content_entry = CTk.CTkTextbox(third, height=200, width=300, corner_radius=4, border_width=1,
-                                   border_color="#1f6aa5", fg_color='gray19')
+                                   border_color="#1f6aa5")
     content_entry.bind('<Control-v>', on_paste)
     content_entry.pack()
 
